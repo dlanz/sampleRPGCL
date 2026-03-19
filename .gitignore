@@ -3,3 +3,4 @@
 .theia
 .vscode/launch.json
 .vscode/rpglint.json
+.env
