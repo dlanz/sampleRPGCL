@@ -1,3 +1,6 @@
+      *%METADATA                                                       *
+      * %TEXT Global DDS constants include                             *
+      *%EMETADATA                                                      *
         Dcl-C F01        X'31';
         Dcl-C F02        X'32';
         Dcl-C F03        X'33';

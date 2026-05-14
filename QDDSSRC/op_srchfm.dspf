@@ -1,3 +1,6 @@
+      *%METADATA                                                       *
+      * %TEXT Operation Search DDS Display File                        *
+      *%EMETADATA                                                      *
      A*%%EC
      A                                      DSPSIZ(24 80 *DS3                  -
      A                                             27 132 *DS4)
@@ -42,7 +45,7 @@
      A  60                                  DSPATR(PR)
      A            S1OPCODE       1A  O  7  4COLOR(WHT)
      A            S1OPDESC      20A  O  7 30COLOR(WHT)
-     
+
      A*************************************************************************
      A*         S1CTL (Subfile Control)                                   *****
      A*************************************************************************

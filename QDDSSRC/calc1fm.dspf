@@ -1,3 +1,6 @@
+      *%METADATA                                                       *
+      * %TEXT CALC1 DDS Display File                                   *
+      *%EMETADATA                                                      *
      A*%%EC
      A                                      DSPSIZ(24 80 *DS3                  -
      A                                             27 132 *DS4)

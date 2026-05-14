@@ -1,0 +1,8 @@
+/*%METADATA                                       */
+/*%TEXT Binder source for OP_SRCH service program  */
+/*%MEMETADATA                                     */
+STRPGMEXP   PGMLVL(*CURRENT) SIGNATURE('OP_SRCH V1.0')
+
+  EXPORT    SYMBOL('OP_SRCH')
+
+ENDPGMEXP

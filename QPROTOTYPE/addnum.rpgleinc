@@ -1,21 +1,23 @@
-**free
-/if defined(addNum_pr)
-  Dcl-Pr addNum packed(5:0);
-/endif
+      *%METADATA                                                       *
+      * %TEXT Prototype for addnum                                     *
+      *%EMETADATA  
+      /if defined(addnum_pr)
+        Dcl-Pr addnum packed(5:0);
+      /endif
 
-/if defined(addNum_pi)
-  Dcl-Pi addNum packed(5:0);
-/endif
+      /if defined(addnum_pi)
+        Dcl-Pi addnum packed(5:0);
+      /endif
 
-  pValue1 packed(5:0);
-  pValue2 packed(5:0);
+        pValue1 packed(5:0);
+        pValue2 packed(5:0);
 
-/if defined(addNum_pr)    
-  End-Pr;
-  /undefine addNum_pr
-/endif
+      /if defined(addnum_pr)    
+        End-Pr;
+        /undefine addnum_pr
+      /endif
 
-/if defined(addNum_pi)    
-  End-Pi;
-  /undefine addNum_pi
-/endif
+      /if defined(addnum_pi)    
+        End-Pi;
+        /undefine addnum_pi
+      /endif

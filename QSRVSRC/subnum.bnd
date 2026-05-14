@@ -1,0 +1,8 @@
+/*%METADATA                                       */
+/*%TEXT Binder source for SUBNUM service program  */
+/*%MEMETADATA                                     */
+STRPGMEXP   PGMLVL(*CURRENT) SIGNATURE('SUBNUM V1.0')
+
+  EXPORT    SYMBOL('SUBNUM')
+
+ENDPGMEXP

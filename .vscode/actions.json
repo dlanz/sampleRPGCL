@@ -44,21 +44,18 @@
       "GLOBAL"
     ],
     "postDownload": [
-      ".logs/joblog.json",
-      ".logs/output.log"
     ]
   },
   {
     "name": "Build and deploy current with bob 🔨",
     "command": "/QOpenSys/pkgs/bin/makei compile -f &BASENAME -e verlibcsy=&CURLIB",
+    "AltCommand": "OPT=*EVENTF BUILDLIB=&CURLIB /QOpenSys/pkgs/bin/makei compile -f {filename}",
     "environment": "pase",
     "deployFirst": true,
     "extensions": [
       "GLOBAL"
     ],
     "postDownload": [
-      ".logs/joblog.json",
-      ".logs/output.log"
     ]
   }
 ]

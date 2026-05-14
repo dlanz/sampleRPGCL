@@ -1,21 +1,23 @@
-**free
-/if defined(divNum_pr)
-  Dcl-Pr divNum packed(5:0);
-/endif
+      *%METADATA                                                       *
+      * %TEXT Prototype for divnum                                     *
+      *%EMETADATA  
+      /if defined(divnum_pr)
+        Dcl-Pr divnum packed(5:0);
+      /endif
 
-/if defined(divNum_pi)
-  Dcl-Pi divNum packed(5:0);
-/endif
+      /if defined(divnum_pi)
+        Dcl-Pi divnum packed(5:0);
+      /endif
 
-  pValue1 packed(5:0);
-  pValue2 packed(5:0);
+        pValue1 packed(5:0);
+        pValue2 packed(5:0);
 
-/if defined(divNum_pr)    
-  End-Pr;
-  /undefine divNum_pr
-/endif
+      /if defined(divnum_pr)    
+        End-Pr;
+        /undefine divnum_pr
+      /endif
 
-/if defined(divNum_pi)    
-  End-Pi;
-  /undefine divNum_pi
-/endif
+      /if defined(divnum_pi)    
+        End-Pi;
+        /undefine divnum_pi
+      /endif

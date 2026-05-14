@@ -1,0 +1,20 @@
+      /*%METADATA                                                     */
+      /* %TEXT Wrapper for CALC1                                      */
+      /*%EMETADATA                                                    */
+             PGM        PARM()
+
+             DCL        VAR(&VAR1) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&VAR2) TYPE(*CHAR) LEN(10)
+
+             CHGVAR     VAR(&VAR1) VALUE('HELLO')
+             CHGVAR     VAR(&VAR2) VALUE('WORLD')
+
+             MONMSG     MSGID(CPF0000 CPF9999) EXEC(DO)
+                DMPCLPGM
+                DSPJOBLOG  OUTPUT(*PRINT)
+                CHGJOB     LOGCLPGM(*NO)
+             enddo
+
+             CALL       PGM(CALC1) PARM()
+
+             ENDPGM

@@ -1,25 +1,27 @@
-**free
-ctl-opt NoMain bnddir('INABIND1');
+      *%METADATA                                                       *
+      * %TEXT Adds two numbers                                         *
+      *%EMETADATA                                                      *
+        ctl-opt NoMain;
 
-dcl-proc addNum EXPORT;
+        dcl-proc addnum EXPORT;
 
-  // Prototype Definition for addNum
-  /define addNum_pr
-  /include 'addNum.rpgleinc'
+          // Prototype Definition for addnum
+          /define addnum_pr
+          /copy 'QPROTOTYPE/addnum.rpgleinc'
 
-  // Procedure Interface Definition for addNum
-  /define addNum_pi
-  /include 'addNum.rpgleinc'
+          // Procedure Interface Definition for addnum
+          /define addnum_pi
+          /include 'QPROTOTYPE/addnum.rpgleinc'
 
-  Dcl-s result                  packed(5:0)     inz(0);
-  Dcl-s wField1                 packed(5:0)     inz(0);
-  Dcl-s wField2                 packed(5:0)     inz(0);       
+          Dcl-s result                  packed(5:0)     inz(0);
+          Dcl-s wField1                 packed(5:0)     inz(0);
+          Dcl-s wField2                 packed(5:0)     inz(0);
 
-  wField1 = pValue1;
-  wField2 = pValue2;
-  result = wField1 + wField2;
+          wField1 = pValue1;
+          wField2 = pValue2;
+          result = wField1 + wField2;
 
-  return result;
+          return result;
 
-  *InLR = *on;
-End-Proc addNum;
+          *InLR = *on;
+        End-Proc addnum;

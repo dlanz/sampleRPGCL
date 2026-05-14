@@ -1,21 +1,23 @@
-**free
-/if defined(multNum_pr)
-  Dcl-Pr multNum packed(5:0);
-/endif
+      *%METADATA                                                       *
+      * %TEXT Prototype for multnum                                    *
+      *%EMETADATA 
+      /if defined(multnum_pr)
+        Dcl-Pr multnum packed(5:0);
+      /endif
 
-/if defined(multNum_pi)
-  Dcl-Pi multNum packed(5:0);
-/endif
+      /if defined(multnum_pi)
+        Dcl-Pi multnum packed(5:0);
+      /endif
 
-  pValue1 packed(5:0);
-  pValue2 packed(5:0);
+        pValue1 packed(5:0);
+        pValue2 packed(5:0);
 
-/if defined(multNum_pr)    
-  End-Pr;
-  /undefine multNum_pr
-/endif
+      /if defined(multnum_pr)    
+        End-Pr;
+        /undefine multnum_pr
+      /endif
 
-/if defined(multNum_pi)    
-  End-Pi;
-  /undefine multNum_pi
-/endif
+      /if defined(multnum_pi)    
+        End-Pi;
+        /undefine multnum_pi
+      /endif

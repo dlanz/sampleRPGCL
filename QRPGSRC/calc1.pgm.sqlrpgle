@@ -1,236 +1,241 @@
-**free
-Ctl-Opt bnddir('INABIND1');
-Dcl-f calc1fm WORKSTN infds(info_DS)
-                      IndDS(indicator_DS);
+      *%METADATA                                                       *
+      * %TEXT Calculator App 1                                         *
+      *%EMETADATA                                                      *
+        Ctl-Opt DFTACTGRP(*NO) 
+                ACTGRP('CALC1') 
+                bnddir('INABIND1');
+                
+        Dcl-f calc1fm WORKSTN infds(info_DS)
+                              IndDS(indicator_DS);
 
-Dcl-DS indicator_DS;
-  INVALID_OPTION ind pos(60);
-End-DS;
+        /copy 'QPROTOTYPE/ddsconst.rpgleinc'
 
-// Program Status Data Structure
-Dcl-ds  pgm_stat  PSDS;
-  pgm_name     *PROC;
-  pgm_job   char(10) pos(244);
-  pgm_user  char(10) pos(254);
-End-ds;
+        // Prototype Definition for addnum
+        /define addnum_pr
+        /copy 'QPROTOTYPE/addnum.rpgleinc'
 
-Dcl-DS info_DS;
-  FUNCTION_KEY         Char(1)    Pos(369);
-End-DS;
+        // Prototype Definition for subnum
+        /define subnum_pr
+        /copy 'QPROTOTYPE/subnum.rpgleinc'
 
-/include 'ddsConst.rpgleinc'
+        // Prototype Definition for multnum
+        /define multnum_pr
+        /copy 'QPROTOTYPE/multnum.rpgleinc'
 
-// Prototype Definition for addNum
-/define addNum_pr
-/include 'addNum.rpgleinc'
+        // Prototype Definition for divnum
+        /define divnum_pr
+        /copy 'QPROTOTYPE/divnum.rpgleinc'
 
-// Prototype Definition for subNum
-/define subNum_pr
-/include 'subNum.rpgleinc'
+        // Prototype Definition for op_srch
+        /define op_srch_pr
+        /copy 'QPROTOTYPE/op_srch.rpgleinc'
 
-// Prototype Definition for multNum
-/define multNum_pr
-/include 'multNum.rpgleinc'
+        Dcl-s Exit                    Ind               Inz(*Off);
+        Dcl-s ScrnId                  char(2)           inz(*Blanks);
 
-// Prototype Definition for divNum
-/define divNum_pr
-/include 'divNum.rpgleinc'
+        Dcl-s S1Bld                   char(2)           inz(*Blanks);
 
-// Prototype Definition for op_srch
-/define op_srch_pr
-/include 'op_srch.rpgleinc'
+        Dcl-s Today                   packed(8:0)       inz(*Zeros);
+        Dcl-s operationCode           char(1)           inz('+');
+        Dcl-s operationDesc           char(20)          inz('Addition');
+        Dcl-s result                  packed(5:0)       inz(0);
+        Dcl-s field1                  packed(5:0)       inz(0);
+        Dcl-s field2                  packed(5:0)       inz(0);
 
-Dcl-s Exit                    Ind               Inz(*Off);
-Dcl-s ScrnId                  char(2)           inz(*Blanks);
+        Dcl-DS indicator_DS;
+          INVALID_OPTION ind pos(60);
+        End-DS;
 
-Dcl-s S1Bld                   char(2)           inz(*Blanks);
+        // Program Status Data Structure
+        Dcl-ds  pgm_stat  PSDS;
+          pgm_name     *PROC;
+          pgm_job   char(10) pos(244);
+          pgm_user  char(10) pos(254);
+        End-ds;
 
-Dcl-s Today                   packed(8:0)       inz(*Zeros);
-Dcl-s operationCode           char(1)           inz('+');
-Dcl-s operationDesc           char(20)          inz('Addition');
-Dcl-s result                  packed(5:0)       inz(0);
-Dcl-s field1                  packed(5:0)       inz(0);
-Dcl-s field2                  packed(5:0)       inz(0);
+        Dcl-DS info_DS;
+          FUNCTION_KEY         Char(1)    Pos(369);
+        End-DS;
 
-// *******************************************************************
-// Main Processing
-// *******************************************************************
+        // *******************************************************************
+        // Main Processing
+        // *******************************************************************
 
-// Get Company Nmae
-$CMPNAME = '    Dan''s Wonder Emporium';
+        // Get Company Nmae
+        $CMPNAME = '    Dan''s Wonder Emporium';
 
-// Define Program Name
-$PGMNAME = pgm_name;
+        // Define Program Name
+        $PGMNAME = pgm_name;
 
-// Get Program Description
-$PGMDESC  = 'Simple Calculator';
+        // Get Program Description
+        $PGMDESC  = 'Simple Calculator';
 
-// Get System Date as Today
-EXEC SQL
-  SET :Today = DEC(CURRENT DATE);
+        // Get System Date as Today
+        EXEC SQL
+          SET :Today = DEC(CURRENT DATE);
 
-ScrnId = 'S1';
-S1Bld  = *On;
-Exit = *OFF;
+        ScrnId = 'S1';
+        S1Bld  = *On;
+        Exit = *OFF;
 
-Dow (Not Exit);
+        Dow (Not Exit);
 
-  SELECT;
+          SELECT;
 
-    WHEN (ScrnId = 'S1');
-      ScrnS1();
-    OTHER;
-      EndPgm();
+            WHEN (ScrnId = 'S1');
+              ScrnS1();
+            OTHER;
+              EndPgm();
 
-  ENDSL;
+          ENDSL;
 
-ENDDO;
+        ENDDO;
 
-return;
+        return;
 
-// *******************************************************************
-// Subroutine to process 1st Screen ( ScrnS1 )
-// *******************************************************************
+        // *******************************************************************
+        // Subroutine to process 1st Screen ( ScrnS1 )
+        // *******************************************************************
 
-Dcl-Proc ScrnS1;
+        Dcl-Proc ScrnS1;
 
-  IF (S1Bld = *On);
-    BldS1();
-  ENDIF;
+          IF (S1Bld = *On);
+            BldS1();
+          ENDIF;
 
-  Exfmt S1FMT;
-  
-  INVALID_OPTION  = *Off;
+          Exfmt S1FMT;
 
-  SELECT;
+          INVALID_OPTION  = *Off;
 
-    WHEN (FUNCTION_KEY = F03);
-      EndPgm();
+          SELECT;
 
-    WHEN (FUNCTION_KEY = F04);
-      S1Search();
+            WHEN (FUNCTION_KEY = F03);
+              EndPgm();
 
-    WHEN (FUNCTION_KEY = F05);
-      S1RefreshScreen();
+            WHEN (FUNCTION_KEY = F04);
+              S1Search();
 
-    WHEN (FUNCTION_KEY = F12);
-      EndPgm();
+            WHEN (FUNCTION_KEY = F05);
+              S1RefreshScreen();
 
-    OTHER;
-      S1Process();
+            WHEN (FUNCTION_KEY = F12);
+              EndPgm();
 
-  ENDSL;
+            OTHER;
+              S1Process();
 
-End-Proc;
+          ENDSL;
 
-// *******************************************************************
-// Subroutine to Build Screen 2
-// *******************************************************************
+        End-Proc;
 
-Dcl-Proc BldS1;
+        // *******************************************************************
+        // Subroutine to Build Screen 2
+        // *******************************************************************
 
-  // Set field values 
-  setFieldValues();
+        Dcl-Proc BldS1;
 
-  S1Bld = *Off;
-End-Proc;
+          // Set field values
+          setFieldValues();
 
-// *******************************************************************
-// Subroutine to process
-// *******************************************************************
+          S1Bld = *Off;
+        End-Proc;
 
-Dcl-Proc S1Process;
+        // *******************************************************************
+        // Subroutine to process
+        // *******************************************************************
 
-  // GET Field Values
-  getFieldValues();
+        Dcl-Proc S1Process;
 
-  if (operationCode = '+');
-    result = addNum(field1 :field2);
-  elseif (operationCode = '-');
-    result = subNum(field1 :field2);
-  elseif (operationCode = '*');
-    result = multNum(field1 :field2);
-  elseif (operationCode = '/');
-    result = divNum(field1 :field2);
-  else;
-    INVALID_OPTION = *on;
-    return;
-  endif;
+          // GET Field Values
+          getFieldValues();
 
-  // Set field Values
-  setFieldValues();
-  return;
+          if (operationCode = '+');
+            result = addnum(field1 :field2);
+          elseif (operationCode = '-');
+            result = subnum(field1 :field2);
+          elseif (operationCode = '*');
+            result = multnum(field1 :field2);
+          elseif (operationCode = '/');
+            result = divnum(field1 :field2);
+          else;
+            INVALID_OPTION = *on;
+            return;
+          endif;
 
-End-Proc;
+          // Set field Values
+          setFieldValues();
+          return;
+
+        End-Proc;
 
 
-// **********************************************************************
-// Subroutine to Search
-// **********************************************************************
+        // **********************************************************************
+        // Subroutine to Search
+        // **********************************************************************
 
-Dcl-Proc S1Search;
+        Dcl-Proc S1Search;
 
-  getFieldValues();
-  
-  SELECT;
-    when (csrfld = 'S1OPER');
-      op_srch(operationCode :operationDesc);
-  endsl;
+          getFieldValues();
 
-  S1Bld = *On;
-  return;
-End-Proc;
+          SELECT;
+            when (csrfld = 'S1OPER');
+              op_srch(operationCode :operationDesc);
+          endsl;
 
-// **********************************************************************
-// Subroutine to Refresh
-// **********************************************************************
+          S1Bld = *On;
+          return;
+        End-Proc;
 
-Dcl-Proc S1RefreshScreen;
-  S1Bld  = *On;
-  ScrnId = 'S1';
+        // **********************************************************************
+        // Subroutine to Refresh
+        // **********************************************************************
 
-  // Blank out variables
-  field1 = 0;
-  field2 = 0;
-  operationCode = '';
-  result = 0;
-  
-  // Set field Values
-  setFieldValues();
-  return;
-End-Proc;
+        Dcl-Proc S1RefreshScreen;
+          S1Bld  = *On;
+          ScrnId = 'S1';
 
-// **********************************************************************
-// Set Field Values
-// **********************************************************************
+          // Blank out variables
+          field1 = 0;
+          field2 = 0;
+          operationCode = '';
+          result = 0;
 
-Dcl-Proc setFieldValues;
-  S1NUM1 = field1;
-  S1NUM2 = field2;
-  S1OPER = operationCode;
-  S1RESULT = result;
-  S1Bld = *On;
-  return;
-End-Proc;
+          // Set field Values
+          setFieldValues();
+          return;
+        End-Proc;
 
-// **********************************************************************
-// Get Field Values
-// **********************************************************************
+        // **********************************************************************
+        // Set Field Values
+        // **********************************************************************
 
-Dcl-Proc getFieldValues;
-  field1 = S1NUM1;
-  field2 = S1NUM2;
-  operationCode = S1OPER;
-  result = S1RESULT;
-  return;
-End-Proc;
+        Dcl-Proc setFieldValues;
+          S1NUM1 = field1;
+          S1NUM2 = field2;
+          S1OPER = operationCode;
+          S1RESULT = result;
+          S1Bld = *On;
+          return;
+        End-Proc;
 
-// **********************************************************************
-// SubProcedure to End Program
-// **********************************************************************
+        // **********************************************************************
+        // Get Field Values
+        // **********************************************************************
 
-Dcl-Proc EndPgm;
-  *INLR = *On;
-  Exit = *On;
-  return;
-End-Proc;
+        Dcl-Proc getFieldValues;
+          field1 = S1NUM1;
+          field2 = S1NUM2;
+          operationCode = S1OPER;
+          result = S1RESULT;
+          return;
+        End-Proc;
+
+        // **********************************************************************
+        // SubProcedure to End Program
+        // **********************************************************************
+
+        Dcl-Proc EndPgm;
+          *INLR = *On;
+          Exit = *On;
+          return;
+        End-Proc;

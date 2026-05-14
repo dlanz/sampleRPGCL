@@ -1,10 +1,7 @@
 {
   "description": "sampleRPGCL",
+  "curlib": "&CURLIB",
   "includePath": [
     "QPROTOTYPE"
-  ],
-  "curlib": "&mycurlib",
-  "objlib": "&mycurlib",
-  "buildCommand": "/QOpenSys/pkgs/bin/elias compile {branch}",
-  "compileCommand": "/QOpenSys/pkgs/bin/elias compile {branch} -f {filename}"
+  ]
 }

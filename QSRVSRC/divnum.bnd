@@ -1,0 +1,8 @@
+/*%METADATA                                       */
+/*%TEXT Binder source for DIVNUM service program  */
+/*%MEMETADATA                                     */
+STRPGMEXP   PGMLVL(*CURRENT) SIGNATURE('DIVNUM V1.0')
+
+  EXPORT    SYMBOL('DIVNUM')
+
+ENDPGMEXP

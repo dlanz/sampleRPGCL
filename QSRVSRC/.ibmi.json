@@ -1,5 +1,8 @@
 {
     "build": {
         "tgtCcsid": "37"
+    },
+    "extensions": {
+        "bnd": "BND"
     }
 }

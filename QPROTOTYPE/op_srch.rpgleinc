@@ -1,3 +1,6 @@
+      *%METADATA                                                       *
+      * %TEXT Prototype for op_srch                                    *
+      *%EMETADATA 
       /if defined(op_srch_pr)
         Dcl-Pr op_srch;
       /endif
