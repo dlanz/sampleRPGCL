@@ -1,8 +1,0 @@
-/*%METADATA                                       */
-/*%TEXT Binder source for ADDNUM service program  */
-/*%MEMETADATA                                     */
-STRPGMEXP   PGMLVL(*CURRENT) SIGNATURE('ADDNUM V1.0')
-
-  EXPORT    SYMBOL('ADDNUM')
-
-ENDPGMEXP
