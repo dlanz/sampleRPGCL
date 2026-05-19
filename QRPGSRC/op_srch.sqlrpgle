@@ -6,10 +6,6 @@
                                   infds(info_DS)
                                   IndDS(indicator_DS);
 
-        // Prototype Definition for op_srch
-        /define op_srch_pr
-        /copy 'QPROTOTYPE/op_srch.rpgleinc'
-
         /copy 'QPROTOTYPE/ddsconst.rpgleinc'
 
         Dcl-S  Exit                         Ind             Inz(*Off);

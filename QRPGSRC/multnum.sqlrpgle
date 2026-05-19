@@ -5,10 +5,6 @@
 
         dcl-proc multnum EXPORT;
 
-          // Prototype Definition for multnum
-          /define multnum_pr
-          /copy 'QPROTOTYPE/multnum.rpgleinc'
-
           // Procedure Interface Definition for multnum
           /define multnum_pi
           /include 'QPROTOTYPE/multnum.rpgleinc'

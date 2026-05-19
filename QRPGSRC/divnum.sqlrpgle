@@ -5,10 +5,6 @@
 
         dcl-proc divnum EXPORT;
 
-          // Prototype Definition for divnum
-          /define divnum_pr
-          /copy 'QPROTOTYPE/divnum.rpgleinc'
-
           // Procedure Interface Definition for divnum
           /define divnum_pi
           /include 'QPROTOTYPE/divnum.rpgleinc'

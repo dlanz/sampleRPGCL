@@ -5,10 +5,6 @@
 
         dcl-proc subnum EXPORT;
 
-          // Prototype Definition for subnum
-          /define subnum_pr
-          /copy 'QPROTOTYPE/subnum.rpgleinc'
-
           // Procedure Interface Definition for subnum
           /define subnum_pi
           /include 'QPROTOTYPE/subnum.rpgleinc'

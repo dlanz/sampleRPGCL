@@ -5,10 +5,6 @@
 
         dcl-proc addnum EXPORT;
 
-          // Prototype Definition for addnum
-          /define addnum_pr
-          /copy 'QPROTOTYPE/addnum.rpgleinc'
-
           // Procedure Interface Definition for addnum
           /define addnum_pi
           /include 'QPROTOTYPE/addnum.rpgleinc'
