@@ -8,7 +8,6 @@
 
         /copy 'QPROTOTYPE/ddsconst.rpgleinc'
 
-        Dcl-S  Exit                         Ind             Inz(*Off);
         Dcl-s  c1open                       ind             inz(*off);
 
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
@@ -54,6 +53,7 @@
 
           Dcl-s  ScrnId               char(2)         inz('S1');
           Dcl-s  S1Bld                char(2)         inz(*on);
+          Dcl-S  Exit                 Ind             Inz(*Off);
 
           SFLCLR  = *On;
           SFLDSP  = *On;
@@ -73,9 +73,9 @@
 
             SELECT;
               WHEN (ScrnId = 'S1');
-                ScrnS1(ScrnId :s1Bld :OP_CODE :OP_NAME);
+                ScrnS1(ScrnId :s1Bld :Exit :OP_CODE :OP_NAME);
               OTHER;
-                EndPgm();
+                EndPgm(Exit);
             ENDSL;
 
           ENDDO;
@@ -91,6 +91,7 @@
           Dcl-Pi ScrnS1;
             ScrnId  char(2);
             S1Bld   char(2);
+            Exit    ind;
             op_code char(1);
             op_name char(20);
           End-Pi;
@@ -112,13 +113,13 @@
           SELECT;
 
             WHEN (FUNCTION_KEY = F03);
-              EndPgm();
+              EndPgm(Exit);
               op_code = wOp_Code;
               op_name = wOp_Name;
             WHEN (FUNCTION_KEY = F05);
               S1RefreshScreen(ScrnId :S1Bld);
             WHEN (FUNCTION_KEY = F12);
-              EndPgm();
+              EndPgm(Exit);
               op_code = wOp_Code;
               op_name = wOp_Name;
             When (PAGEDOWN = *On);
@@ -126,7 +127,7 @@
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
-              S1Process(ScrnId :S1Bld);
+              S1Process(ScrnId :S1Bld :Exit);
           ENDSL;
         End-Proc;
 
@@ -192,6 +193,7 @@
           Dcl-Pi S1Process;
             ScrnId  char(2);
             S1Bld   ind;
+            Exit    ind;
           End-Pi;
 
           // If filter values have changed, trigger refresh and leave.
@@ -213,7 +215,7 @@
               WHEN (S1Opt = 'X'); // Select a single record
                 wOp_Code = S1OpCode;
                 wOp_Name = S1OpDesc;
-                EndPgm();
+                EndPgm(Exit);
                 Iter;
               When (S1Opt <> '');
                 S1Opt  = *Blank;
@@ -337,6 +339,9 @@
         // **********************************************************************
 
         Dcl-Proc EndPgm;
+          Dcl-Pi EndPgm;
+            Exit    ind;
+          End-Pi;
 
           closec1();
           *INLR = *ON;
