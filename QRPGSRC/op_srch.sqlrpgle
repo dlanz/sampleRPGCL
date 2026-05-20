@@ -9,7 +9,6 @@
         /copy 'QPROTOTYPE/ddsconst.rpgleinc'
 
         Dcl-S  Exit                         Ind             Inz(*Off);
-        Dcl-s  ScrnId                       char(2)         inz('S1');
         Dcl-s  c1open                       ind             inz(*off);
 
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
@@ -52,6 +51,8 @@
           /define op_srch_pi
           /include 'QPROTOTYPE/op_srch.rpgleinc'
 
+
+          Dcl-s  ScrnId               char(2)         inz('S1');
           Dcl-s  S1Bld                char(2)         inz(*on);
 
           SFLCLR  = *On;
@@ -72,7 +73,7 @@
 
             SELECT;
               WHEN (ScrnId = 'S1');
-                ScrnS1(s1Bld :OP_CODE :OP_NAME);
+                ScrnS1(ScrnId :s1Bld :OP_CODE :OP_NAME);
               OTHER;
                 EndPgm();
             ENDSL;
@@ -88,6 +89,7 @@
 
         Dcl-Proc ScrnS1;
           Dcl-Pi ScrnS1;
+            ScrnId  char(2);
             S1Bld   char(2);
             op_code char(1);
             op_name char(20);
@@ -114,7 +116,7 @@
               op_code = wOp_Code;
               op_name = wOp_Name;
             WHEN (FUNCTION_KEY = F05);
-              S1RefreshScreen(S1Bld);
+              S1RefreshScreen(ScrnId :S1Bld);
             WHEN (FUNCTION_KEY = F12);
               EndPgm();
               op_code = wOp_Code;
@@ -124,7 +126,7 @@
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
-              S1Process(S1Bld);
+              S1Process(ScrnId :S1Bld);
           ENDSL;
         End-Proc;
 
@@ -188,13 +190,14 @@
 
         Dcl-Proc S1Process;
           Dcl-Pi S1Process;
+            ScrnId  char(2);
             S1Bld   ind;
           End-Pi;
 
           // If filter values have changed, trigger refresh and leave.
 
           If (P1OpCode <> wOldP1OpCode OR P1OpDesc <> wOldP1OpDesc);
-            S1RefreshScreen(S1Bld);
+            S1RefreshScreen(ScrnId :S1Bld);
             return;
           Endif;
 
@@ -246,6 +249,7 @@
 
         Dcl-Proc S1RefreshScreen;
           Dcl-Pi S1RefreshScreen;
+            ScrnId  char(2);
             S1Bld   ind;
           End-Pi;
 
