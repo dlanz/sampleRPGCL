@@ -16,7 +16,6 @@
         Dcl-c  S1PAGESIZE                   const(12);
         Dcl-s  S1TotalRecords               packed(5:0)     inz(*Zeros);
         Dcl-s  S1RecordInPage               packed(5:0)     inz(*Zeros);
-        Dcl-s  S1Bld                        char(2)         inz(*Blanks);
 
         Dcl-s  wFilterOpCode                 char(3)           inz('');
         Dcl-s  wFilterOpDesc                 char(22)          inz('');
@@ -53,6 +52,8 @@
           /define op_srch_pi
           /include 'QPROTOTYPE/op_srch.rpgleinc'
 
+          Dcl-s  S1Bld                char(2)         inz(*on);
+
           SFLCLR  = *On;
           SFLDSP  = *On;
 
@@ -71,7 +72,7 @@
 
             SELECT;
               WHEN (ScrnId = 'S1');
-                ScrnS1(OP_CODE :OP_NAME);
+                ScrnS1(s1Bld :OP_CODE :OP_NAME);
               OTHER;
                 EndPgm();
             ENDSL;
@@ -87,12 +88,13 @@
 
         Dcl-Proc ScrnS1;
           Dcl-Pi ScrnS1;
+            S1Bld   char(2);
             op_code char(1);
             op_name char(20);
           End-Pi;
 
           IF (S1Bld = *On);
-            BldS1();
+            BldS1(S1Bld);
           ENDIF;
 
           If (S1CurrentRecord = *Zero);
@@ -112,7 +114,7 @@
               op_code = wOp_Code;
               op_name = wOp_Name;
             WHEN (FUNCTION_KEY = F05);
-              S1RefreshScreen();
+              S1RefreshScreen(S1Bld);
             WHEN (FUNCTION_KEY = F12);
               EndPgm();
               op_code = wOp_Code;
@@ -122,7 +124,7 @@
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
-              S1Process();
+              S1Process(S1Bld);
           ENDSL;
         End-Proc;
 
@@ -131,6 +133,9 @@
         // *******************************************************************
 
         Dcl-Proc BldS1;
+          Dcl-Pi BldS1;
+            S1Bld   ind;
+          End-Pi;
 
 
           Dcl-s  wFilterOpCode                 char(3)           inz('');
@@ -182,11 +187,14 @@
         // *******************************************************************
 
         Dcl-Proc S1Process;
+          Dcl-Pi S1Process;
+            S1Bld   ind;
+          End-Pi;
 
           // If filter values have changed, trigger refresh and leave.
 
           If (P1OpCode <> wOldP1OpCode OR P1OpDesc <> wOldP1OpDesc);
-            S1RefreshScreen();
+            S1RefreshScreen(S1Bld);
             return;
           Endif;
 
@@ -237,6 +245,10 @@
         // **********************************************************************
 
         Dcl-Proc S1RefreshScreen;
+          Dcl-Pi S1RefreshScreen;
+            S1Bld   ind;
+          End-Pi;
+
           S1Bld  = *On;
           ScrnId = 'S1';
         End-Proc;
