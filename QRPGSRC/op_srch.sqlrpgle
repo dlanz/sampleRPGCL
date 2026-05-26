@@ -10,7 +10,6 @@
 
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
         Dcl-c  S1PAGESIZE                   const(12);
-        Dcl-s  S1RecordInPage               packed(5:0)     inz(*Zeros);
 
         Dcl-s  wFilterOpCode                 char(3)           inz('');
         Dcl-s  wFilterOpDesc                 char(22)          inz('');
@@ -95,14 +94,15 @@
             c1open  ind;
           End-Pi;
 
-          Dcl-s  S1TotalRecords                packed(5:0)       inz(*Zeros);
+          Dcl-s  S1TotalRecords             packed(5:0)       inz(*Zeros);
+          Dcl-s  S1RecordInPage             packed(5:0)     inz(*Zeros);
 
           IF (S1Bld = *On);
-            BldS1(S1Bld :c1open :S1TotalRecords);
+            BldS1(S1Bld :c1open :S1TotalRecords :S1RecordInPage);
           ENDIF;
 
           If (S1CurrentRecord = *Zero);
-            NoRecs(c1open);
+            NoRecs(c1open :S1RecordInPage);
           Endif;
 
           Write S1WIN;
@@ -124,7 +124,7 @@
               op_code = wOp_Code;
               op_name = wOp_Name;
             When (PAGEDOWN = *On);
-              S1PageDown(c1open :S1TotalRecords);
+              S1PageDown(c1open :S1TotalRecords :S1RecordInPage);
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
@@ -141,6 +141,7 @@
             S1Bld           ind;
             c1open          ind;
             S1TotalRecords  packed(5:0);
+            S1RecordInPage  packed(5:0);
           End-Pi;
 
           Dcl-s  wFilterOpCode                 char(3)           inz('');
@@ -182,7 +183,7 @@
           EXEC SQL OPEN C1;
           c1open=*on;
 
-          S1PageDown(c1open :S1TotalRecords);
+          S1PageDown(c1open :S1TotalRecords :S1RecordInPage);
 
           S1Bld = *Off;
         End-Proc;
@@ -270,6 +271,7 @@
           Dcl-pi S1PageDown;
             c1open          ind;
             S1TotalRecords  packed(5:0);
+            S1RecordInPage  packed(5:0);
           End-pi;
 
           S1RecordInPage = *Zero;
@@ -317,7 +319,8 @@
 
         Dcl-Proc NoRecs;
           Dcl-pi NoRecs;
-            c1open  ind;
+            c1open          ind;
+            S1RecordInPage  packed(5:0);
           End-pi;
 
           S1Opt  = *Blank;
