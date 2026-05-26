@@ -10,7 +10,6 @@
 
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
         Dcl-c  S1PAGESIZE                   const(12);
-        Dcl-s  S1TotalRecords               packed(5:0)     inz(*Zeros);
         Dcl-s  S1RecordInPage               packed(5:0)     inz(*Zeros);
 
         Dcl-s  wFilterOpCode                 char(3)           inz('');
@@ -96,8 +95,10 @@
             c1open  ind;
           End-Pi;
 
+          Dcl-s  S1TotalRecords                packed(5:0)       inz(*Zeros);
+
           IF (S1Bld = *On);
-            BldS1(S1Bld :c1open);
+            BldS1(S1Bld :c1open :S1TotalRecords);
           ENDIF;
 
           If (S1CurrentRecord = *Zero);
@@ -123,7 +124,7 @@
               op_code = wOp_Code;
               op_name = wOp_Name;
             When (PAGEDOWN = *On);
-              S1PageDown(c1open);
+              S1PageDown(c1open :S1TotalRecords);
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
@@ -137,8 +138,9 @@
 
         Dcl-Proc BldS1;
           Dcl-Pi BldS1;
-            S1Bld   ind;
-            c1open  ind;
+            S1Bld           ind;
+            c1open          ind;
+            S1TotalRecords  packed(5:0);
           End-Pi;
 
           Dcl-s  wFilterOpCode                 char(3)           inz('');
@@ -180,7 +182,7 @@
           EXEC SQL OPEN C1;
           c1open=*on;
 
-          S1PageDown(c1open);
+          S1PageDown(c1open :S1TotalRecords);
 
           S1Bld = *Off;
         End-Proc;
@@ -266,7 +268,8 @@
 
         Dcl-Proc S1PageDown;
           Dcl-pi S1PageDown;
-            c1open  ind;
+            c1open          ind;
+            S1TotalRecords  packed(5:0);
           End-pi;
 
           S1RecordInPage = *Zero;
