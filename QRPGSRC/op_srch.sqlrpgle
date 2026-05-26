@@ -11,8 +11,6 @@
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
         Dcl-c  S1PAGESIZE                   const(12);
 
-        Dcl-s  wFilterOpCode                 char(3)           inz('');
-        Dcl-s  wFilterOpDesc                 char(22)          inz('');
         Dcl-s  wOldP1OpCode                  char(1)           inz('');
         Dcl-s  wOldP1OpDesc                  char(20)          inz('');
         Dcl-s  wOp_Code                     char(1)           inz('');
