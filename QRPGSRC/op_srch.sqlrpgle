@@ -11,8 +11,6 @@
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
         Dcl-c  S1PAGESIZE                   const(12);
 
-        Dcl-s  wOldP1OpCode                  char(1)           inz('');
-        Dcl-s  wOldP1OpDesc                  char(20)          inz('');
         Dcl-s  wOp_Code                     char(1)           inz('');
         Dcl-s  wOp_Name                     char(20)          inz('');
 
@@ -93,10 +91,13 @@
           End-Pi;
 
           Dcl-s  S1TotalRecords             packed(5:0)       inz(*Zeros);
-          Dcl-s  S1RecordInPage             packed(5:0)     inz(*Zeros);
+          Dcl-s  S1RecordInPage             packed(5:0)       inz(*Zeros);
+          Dcl-s  wOldP1OpCode               char(1)           inz('');
+          Dcl-s  wOldP1OpDesc               char(20)          inz('');
 
           IF (S1Bld = *On);
-            BldS1(S1Bld :c1open :S1TotalRecords :S1RecordInPage);
+            BldS1(S1Bld :c1open :S1TotalRecords :S1RecordInPage 
+                  :wOldP1OpCode :wOldP1OpDesc);
           ENDIF;
 
           If (S1CurrentRecord = *Zero);
@@ -126,7 +127,8 @@
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
-              S1Process(ScrnId :S1Bld :Exit :c1open);
+              S1Process(ScrnId :S1Bld :Exit :c1open 
+                        :wOldP1OpCode :wOldP1OpDesc);
           ENDSL;
         End-Proc;
 
@@ -140,6 +142,8 @@
             c1open          ind;
             S1TotalRecords  packed(5:0);
             S1RecordInPage  packed(5:0);
+            wOldP1OpCode    char(1);
+            wOldP1OpDesc    char(20);
           End-Pi;
 
           Dcl-s  wFilterOpCode                 char(3)           inz('');
@@ -192,10 +196,12 @@
 
         Dcl-Proc S1Process;
           Dcl-Pi S1Process;
-            ScrnId  char(2);
-            S1Bld   ind;
-            Exit    ind;
-            c1open  ind;
+            ScrnId          char(2);
+            S1Bld           ind;
+            Exit            ind;
+            c1open          ind;
+            wOldP1OpCode    char(1);
+            wOldP1OpDesc    char(20);
           End-Pi;
 
           // If filter values have changed, trigger refresh and leave.
