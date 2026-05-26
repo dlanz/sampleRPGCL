@@ -8,8 +8,6 @@
 
         /copy 'QPROTOTYPE/ddsconst.rpgleinc'
 
-        Dcl-s  c1open                       ind             inz(*off);
-
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
         Dcl-c  S1PAGESIZE                   const(12);
         Dcl-s  S1TotalRecords               packed(5:0)     inz(*Zeros);
@@ -54,6 +52,7 @@
           Dcl-s  ScrnId               char(2)         inz('S1');
           Dcl-s  S1Bld                char(2)         inz(*on);
           Dcl-S  Exit                 Ind             Inz(*Off);
+          Dcl-s  c1open               ind             inz(*off);
 
           SFLCLR  = *On;
           SFLDSP  = *On;
@@ -73,9 +72,9 @@
 
             SELECT;
               WHEN (ScrnId = 'S1');
-                ScrnS1(ScrnId :s1Bld :Exit :OP_CODE :OP_NAME);
+                ScrnS1(ScrnId :s1Bld :Exit :OP_CODE :OP_NAME :c1open);
               OTHER;
-                EndPgm(Exit);
+                EndPgm(Exit :c1open);
             ENDSL;
 
           ENDDO;
@@ -94,14 +93,15 @@
             Exit    ind;
             op_code char(1);
             op_name char(20);
+            c1open  ind;
           End-Pi;
 
           IF (S1Bld = *On);
-            BldS1(S1Bld);
+            BldS1(S1Bld :c1open);
           ENDIF;
 
           If (S1CurrentRecord = *Zero);
-            NoRecs();
+            NoRecs(c1open);
           Endif;
 
           Write S1WIN;
@@ -113,21 +113,21 @@
           SELECT;
 
             WHEN (FUNCTION_KEY = F03);
-              EndPgm(Exit);
+              EndPgm(Exit :c1open);
               op_code = wOp_Code;
               op_name = wOp_Name;
             WHEN (FUNCTION_KEY = F05);
               S1RefreshScreen(ScrnId :S1Bld);
             WHEN (FUNCTION_KEY = F12);
-              EndPgm(Exit);
+              EndPgm(Exit :c1open);
               op_code = wOp_Code;
               op_name = wOp_Name;
             When (PAGEDOWN = *On);
-              S1PageDown();
+              S1PageDown(c1open);
             When (PAGEUP = *On);
               S1RedrawScrollPosition();
             OTHER;
-              S1Process(ScrnId :S1Bld :Exit);
+              S1Process(ScrnId :S1Bld :Exit :c1open);
           ENDSL;
         End-Proc;
 
@@ -138,8 +138,8 @@
         Dcl-Proc BldS1;
           Dcl-Pi BldS1;
             S1Bld   ind;
+            c1open  ind;
           End-Pi;
-
 
           Dcl-s  wFilterOpCode                 char(3)           inz('');
           Dcl-s  wFilterOpDesc                 char(22)          inz('');
@@ -159,7 +159,7 @@
           S1TotalRecords    = *Zero;
 
           SqlCod  = *Zero;
-          closec1();
+          closec1(c1open);
 
           wOldP1OpCode = %TRIM(P1OpCode);
           wOldP1OpDesc = %TRIM(P1OpDesc);
@@ -180,7 +180,7 @@
           EXEC SQL OPEN C1;
           c1open=*on;
 
-          S1PageDown();
+          S1PageDown(c1open);
 
           S1Bld = *Off;
         End-Proc;
@@ -194,6 +194,7 @@
             ScrnId  char(2);
             S1Bld   ind;
             Exit    ind;
+            c1open  ind;
           End-Pi;
 
           // If filter values have changed, trigger refresh and leave.
@@ -215,7 +216,7 @@
               WHEN (S1Opt = 'X'); // Select a single record
                 wOp_Code = S1OpCode;
                 wOp_Name = S1OpDesc;
-                EndPgm(Exit);
+                EndPgm(Exit :c1open);
                 Iter;
               When (S1Opt <> '');
                 S1Opt  = *Blank;
@@ -264,6 +265,9 @@
         // **********************************************************************
 
         Dcl-Proc S1PageDown;
+          Dcl-pi S1PageDown;
+            c1open  ind;
+          End-pi;
 
           S1RecordInPage = *Zero;
 
@@ -279,7 +283,7 @@
               :S1OPCODE, :S1OPDESC;
 
             IF (SQLCOD <> *ZERO);
-              closec1();
+              closec1(c1open);
               SQLCOD = *Zero;
               SFLEND = *On;
               LEAVE;
@@ -309,6 +313,9 @@
         // **********************************************************************
 
         Dcl-Proc NoRecs;
+          Dcl-pi NoRecs;
+            c1open  ind;
+          End-pi;
 
           S1Opt  = *Blank;
 
@@ -319,7 +326,7 @@
 
           Write S1Sfl;
 
-          closec1();
+          closec1(c1open);
           SqlCod = *Zero;
         End-Proc;
 
@@ -328,6 +335,10 @@
         // **********************************************************************
 
         Dcl-Proc closec1;
+          Dcl-Pi closec1;
+            c1open  ind;
+          End-Pi;
+
           if (c1open=*on);
             exec Sql Close C1;
             c1open=*off;
@@ -341,9 +352,10 @@
         Dcl-Proc EndPgm;
           Dcl-Pi EndPgm;
             Exit    ind;
+            c1open  ind;
           End-Pi;
 
-          closec1();
+          closec1(c1open);
           *INLR = *ON;
           Exit = *On;
           return;
