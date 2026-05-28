@@ -129,6 +129,8 @@
               S1Process(ScrnId :S1Bld :Exit :c1open 
                         :wOldP1OpCode :wOldP1OpDesc 
                         :wOp_Code :wOp_Name);
+              op_code = wOp_Code;
+              op_name = wOp_Name;
           ENDSL;
         End-Proc;
 
