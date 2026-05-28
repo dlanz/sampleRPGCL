@@ -11,9 +11,6 @@
         Dcl-s  S1CurrentRecord              packed(5:0)     inz(*Zeros);
         Dcl-c  S1PAGESIZE                   const(12);
 
-        Dcl-s  wOp_Code                     char(1)           inz('');
-        Dcl-s  wOp_Name                     char(20)          inz('');
-
         // Program Status Data Structure
         Dcl-ds  pgm_stat  PSDS;
           pgm_name     *PROC;
@@ -94,6 +91,8 @@
           Dcl-s  S1RecordInPage             packed(5:0)       inz(*Zeros);
           Dcl-s  wOldP1OpCode               char(1)           inz('');
           Dcl-s  wOldP1OpDesc               char(20)          inz('');
+          Dcl-s  wOp_Code                   char(1)           inz('');
+          Dcl-s  wOp_Name                   char(20)          inz('');
 
           IF (S1Bld = *On);
             BldS1(S1Bld :c1open :S1TotalRecords :S1RecordInPage 
@@ -128,7 +127,8 @@
               S1RedrawScrollPosition();
             OTHER;
               S1Process(ScrnId :S1Bld :Exit :c1open 
-                        :wOldP1OpCode :wOldP1OpDesc);
+                        :wOldP1OpCode :wOldP1OpDesc 
+                        :wOp_Code :wOp_Name);
           ENDSL;
         End-Proc;
 
@@ -202,6 +202,8 @@
             c1open          ind;
             wOldP1OpCode    char(1);
             wOldP1OpDesc    char(20);
+            wOp_Code        char(1);
+            wOp_Name        char(20);
           End-Pi;
 
           // If filter values have changed, trigger refresh and leave.
