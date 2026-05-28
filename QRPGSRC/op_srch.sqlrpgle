@@ -91,8 +91,6 @@
           Dcl-s  S1RecordInPage             packed(5:0)       inz(*Zeros);
           Dcl-s  wOldP1OpCode               char(1)           inz('');
           Dcl-s  wOldP1OpDesc               char(20)          inz('');
-          Dcl-s  wOp_Code                   char(1)           inz('');
-          Dcl-s  wOp_Name                   char(20)          inz('');
 
           IF (S1Bld = *On);
             BldS1(S1Bld :c1open :S1TotalRecords :S1RecordInPage 
@@ -113,14 +111,10 @@
 
             WHEN (FUNCTION_KEY = F03);
               EndPgm(Exit :c1open);
-              op_code = wOp_Code;
-              op_name = wOp_Name;
             WHEN (FUNCTION_KEY = F05);
               S1RefreshScreen(ScrnId :S1Bld);
             WHEN (FUNCTION_KEY = F12);
               EndPgm(Exit :c1open);
-              op_code = wOp_Code;
-              op_name = wOp_Name;
             When (PAGEDOWN = *On);
               S1PageDown(c1open :S1TotalRecords :S1RecordInPage);
             When (PAGEUP = *On);
@@ -128,9 +122,7 @@
             OTHER;
               S1Process(ScrnId :S1Bld :Exit :c1open 
                         :wOldP1OpCode :wOldP1OpDesc 
-                        :wOp_Code :wOp_Name);
-              op_code = wOp_Code;
-              op_name = wOp_Name;
+                        :op_code :op_name);
           ENDSL;
         End-Proc;
 
