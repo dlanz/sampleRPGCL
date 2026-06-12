@@ -1,0 +1,149 @@
+      /*%METADATA                                                     */
+      /* %TEXT Create objects from the projects stream files.         */
+      /*%EMETADATA                                                    */
+             PGM        PARM(&PATH &LIB)
+              
+
+              DCL        VAR(&PATH) TYPE(*CHAR) LEN(150)
+              DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+
+              /* Prototypes */
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QPROTOTYPE/addnum.rpgleinc') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QPROTOTYPE.FILE/ADDNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF) +
+                          STMFCCSID(1208) +
+                          DBFCCSID(273)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QPROTOTYPE/subnum.rpgleinc') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QPROTOTYPE.FILE/SUBNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QPROTOTYPE/divnum.rpgleinc') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QPROTOTYPE.FILE/DIVNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QPROTOTYPE/multnum.rpgleinc') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QPROTOTYPE.FILE/MULTNUM.MBR') + 
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QPROTOTYPE/ddsConst.rpgleinc') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QPROTOTYPE.FILE/DDSCONST.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QPROTOTYPE/op_srch.rpgleinc') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QPROTOTYPE.FILE/OP_SRCH.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              /* DDS */
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QDDSSRC/calc1fm.dspf') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QDDSSRC.FILE/CALC1FM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QDDSSRC/op_srchfm.dspf') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QDDSSRC.FILE/OP_SRCHFM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              /* RPG */
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QRPGSRC2/addnum.sqlrpgle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QRPGSRC2.FILE/ADDNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QRPGSRC/subnum.sqlrpgle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QRPGSRC.FILE/SUBNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QRPGSRC/divnum.sqlrpgle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QRPGSRC.FILE/DIVNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QRPGSRC/multnum.sqlrpgle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QRPGSRC.FILE/MULTNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QRPGSRC/op_srch.sqlrpgle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QRPGSRC.FILE/OP_SRCH.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QRPGSRC/calc1.pgm.sqlrpgle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QRPGSRC.FILE/CALC1.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              /* Binding Language */
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QSRVSRC/divnum.bnd') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QSRVSRC.FILE/DIVNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QSRVSRC/multnum.bnd') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QSRVSRC.FILE/MULTNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+                          
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QSRVSRC/op_srch.bnd') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QSRVSRC.FILE/OP_SRCH.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+                          
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QSRVSRC/subnum.bnd') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QSRVSRC.FILE/SUBNUM.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              /* CL */
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QCLSRC/calc1cl.pgm.clle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QCLSRC.FILE/CALC1CL.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QCLSRC/calc1cmpl.pgm.clle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QCLSRC.FILE/CALC1CMPL.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QCLSRC/calc1stmf.pgm.clle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QCLSRC.FILE/CALC1STMF.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+              CPYFRMSTMF  FROMSTMF(&PATH *TCAT 'QCLSRC/calc1stmf1.pgm.clle') +
+                          TOMBR('/QSYS.LIB/' *TCAT &LIB *TCAT '.LIB' *TCAT +
+                                '/QCLSRC.FILE/CALC1stmf1.MBR') +
+                          MBROPT(*REPLACE) +
+                          ENDLINFMT(*LF)
+
+             ENDPGM
