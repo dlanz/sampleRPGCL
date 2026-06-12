@@ -1,0 +1,15 @@
+      /*%METADATA                                                     */
+      /* %TEXT Wrapper for calc1stmf                                  */
+      /*%EMETADATA                                                    */
+            PGM        PARM()
+              
+
+              DCL        VAR(&PATH) TYPE(*CHAR) LEN(150)
+              DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+
+              CHGVAR VAR(&PATH) VALUE('/home/DLANZ/builds/sampleRPGCL/')
+              CHGVAR VAR(&LIB) VALUE('DLANZ1')
+
+              CALL CALC1STMF PARM(&PATH &LIB)
+              
+            ENDPGM
