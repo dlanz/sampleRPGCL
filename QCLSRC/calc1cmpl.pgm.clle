@@ -1,37 +1,85 @@
       /*%METADATA                                                     */
-      /* %TEXT Compile all of CALC1                                   */
+      /* %TEXT Compile objects created from the project stmf.         */
       /*%EMETADATA                                                    */
-             PGM        PARM()
+            PGM        PARM(&LIB)
 
-             /*   DDS:   */
-             CRTDSPF FILE(DLANZ1/CALC1FM) SRCFILE(DLANZ1/QDDSSRC) SRCMBR(CALC1FM) IGCDTA(*N)  +
-                        IGCEXNCHR(*N) REPLACE(*YES)
-             CRTDSPF FILE(DLANZ1/OP_SRCHFM) SRCFILE(DLANZ1/QDDSSRC) SRCMBR(OP_SRCHFM) IGCDTA(*N) +
-                        IGCEXNCHR(*N) REPLACE(*YES)
+              DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
 
-             /*   RPG SERVICE PROGRAMS:   */
-             CRTSQLRPGI OBJ(DLANZ1/ADDNUM) SRCFILE(DLANZ1/QRPGSRC) SRCMBR(ADDNUM) REPLACE(*YES) +
-                        OBJTYPE(*MODULE) RPGPPOPT(*LVL2)
-             CRTSQLRPGI OBJ(DLANZ1/DIVNUM) SRCFILE(DLANZ1/QRPGSRC) SRCMBR(DIVNUM) REPLACE(*YES) +
-                        OBJTYPE(*MODULE) RPGPPOPT(*LVL2)
-             CRTSQLRPGI OBJ(DLANZ1/MULTNUM) SRCFILE(DLANZ1/QRPGSRC) SRCMBR(MULTNUM) REPLACE(*YES) +
-                        OBJTYPE(*MODULE) RPGPPOPT(*LVL2)
-             CRTSQLRPGI OBJ(DLANZ1/SUBNUM) SRCFILE(DLANZ1/QRPGSRC) SRCMBR(SUBNUM) REPLACE(*YES) +
-                        OBJTYPE(*MODULE) RPGPPOPT(*LVL2)
-             CRTSQLRPGI OBJ(DLANZ1/OP_SRCH) SRCFILE(DLANZ1/QRPGSRC) SRCMBR(OP_SRCH) REPLACE(*YES) +
-                        OBJTYPE(*MODULE) RPGPPOPT(*LVL2)
+              /*   DDS:   */
+              CRTDSPF FILE(&LIB/CALC1FM) SRCFILE(&LIB/QDDSSRC) SRCMBR(CALC1FM) IGCDTA(*N)  +
+                          IGCEXNCHR(*N) REPLACE(*YES)
+              CRTDSPF FILE(&LIB/OP_SRCHFM) SRCFILE(&LIB/QDDSSRC) SRCMBR(OP_SRCHFM) IGCDTA(*N) +
+                          IGCEXNCHR(*N) REPLACE(*YES)
 
-             CRTSRVPGM SRVPGM(DLANZ1/ADDNUM) EXPORT(*ALL) TEXT(*MODULE) OPTION(*DUPPROC *DUPVAR)
-             CRTSRVPGM SRVPGM(DLANZ1/DIVNUM) EXPORT(*ALL) TEXT(*MODULE) OPTION(*DUPPROC *DUPVAR)
-             CRTSRVPGM SRVPGM(DLANZ1/MULTNUM) EXPORT(*ALL) TEXT(*MODULE) OPTION(*DUPPROC *DUPVAR)
-             CRTSRVPGM SRVPGM(DLANZ1/SUBNUM) EXPORT(*ALL) TEXT(*MODULE) OPTION(*DUPPROC *DUPVAR)
-             CRTSRVPGM SRVPGM(DLANZ1/OP_SRCH) EXPORT(*ALL) TEXT(*MODULE) OPTION(*DUPPROC *DUPVAR)
+              /*   RPG SERVICE PROGRAMS:   */
+              CRTSQLRPGI OBJ(&LIB/ADDNUM) SRCFILE(&LIB/QRPGSRC2) SRCMBR(ADDNUM) REPLACE(*YES) +
+                          COMMIT(*NONE) OBJTYPE(*MODULE) OPTION(*EVENTF) OUTPUT(*PRINT) +
+                          TEXT('Operations Search') TGTRLS() DBGVIEW(*SOURCE) DBGENCKEY(*NONE) +
+                          USRPRF(*USER) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(273) OPTIMIZE()')
 
-             /*   RPG MAIN:   */
-             CRTSQLRPGI OBJ(DLANZ1/CALC1) SRCFILE(DLANZ1/QRPGSRC) SRCMBR(CALC1) REPLACE(*YES) +
-                        OBJTYPE(*PGM)
+              CRTSRVPGM SRVPGM(&LIB/ADDNUM) EXPORT(*ALL) TEXT(*MODULE) OPTION(*DUPPROC *DUPVAR)
 
-             /*   CL:   */
-             CRTBNDCL PGM(DLANZ1/CALC1CL) SRCFILE(DLANZ1/QCLSRC) SRCMBR(CALC1CL) REPLACE(*YES)
 
-             ENDPGM
+              /*   RPG SERVICE PROGRAMS WITH BINDER SOURCE:   */
+              CRTSQLRPGI OBJ(&LIB/DIVNUM) SRCFILE(&LIB/QRPGSRC) SRCMBR(DIVNUM) REPLACE(*YES) +
+                          COMMIT(*NONE) OBJTYPE(*MODULE) OPTION(*EVENTF) OUTPUT(*PRINT) +
+                          TEXT('Operations Search') TGTRLS() DBGVIEW(*SOURCE) DBGENCKEY(*NONE) +
+                          USRPRF(*USER) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(273) OPTIMIZE()')
+                          
+              CRTSQLRPGI OBJ(&LIB/MULTNUM) SRCFILE(&LIB/QRPGSRC) SRCMBR(MULTNUM) REPLACE(*YES) +
+                          COMMIT(*NONE) OBJTYPE(*MODULE) OPTION(*EVENTF) OUTPUT(*PRINT) +
+                          TEXT('Operations Search') TGTRLS() DBGVIEW(*SOURCE) DBGENCKEY(*NONE) +
+                          USRPRF(*USER) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(273) OPTIMIZE()')
+
+              CRTSQLRPGI OBJ(&LIB/SUBNUM) SRCFILE(&LIB/QRPGSRC) SRCMBR(SUBNUM) REPLACE(*YES) +
+                          COMMIT(*NONE) OBJTYPE(*MODULE) OPTION(*EVENTF) OUTPUT(*PRINT) +
+                          TEXT('Operations Search') TGTRLS() DBGVIEW(*SOURCE) DBGENCKEY(*NONE) +
+                          USRPRF(*USER) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(273) OPTIMIZE()')
+
+              CRTSQLRPGI OBJ(&LIB/OP_SRCH) SRCFILE(&LIB/QRPGSRC) SRCMBR(OP_SRCH) REPLACE(*YES) +
+                          COMMIT(*NONE) OBJTYPE(*MODULE) OPTION(*EVENTF) OUTPUT(*PRINT) +
+                          TEXT('Operations Search') TGTRLS() DBGVIEW(*SOURCE) DBGENCKEY(*NONE) +
+                          USRPRF(*USER) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(273) OPTIMIZE()')
+
+              
+              CRTSRVPGM SRVPGM(&LIB/DIVNUM) MODULE(&LIB/DIVNUM) SRCFILE(&LIB/QSRVSRC) +
+                        SRCMBR(DIVNUM) TEXT('Binder source for DIVNUM service program') +
+                        BNDSRVPGM(*NONE) ACTGRP(*CALLER) ALWUPD(*YES) TGTRLS() AUT() +
+                        DETAIL(*BASIC) STGMDL(*SNGLVL) OPTION(*DUPPROC *DUPVAR) +
+                        BNDDIR(INABIND1) USRPRF(*USER) ALWRINZ(*YES)
+
+              CRTSRVPGM SRVPGM(&LIB/MULTNUM)  MODULE(&LIB/MULTNUM) SRCFILE(&LIB/QSRVSRC) +
+                        SRCMBR(MULTNUM) TEXT('Binder source for MULTNUM service program') +
+                        BNDSRVPGM(*NONE) ACTGRP(*CALLER) ALWUPD(*YES) TGTRLS() AUT() +
+                        DETAIL(*BASIC) STGMDL(*SNGLVL) OPTION(*DUPPROC *DUPVAR) +
+                        BNDDIR(INABIND1) USRPRF(*USER) ALWRINZ(*YES)
+
+              CRTSRVPGM SRVPGM(&LIB/SUBNUM)  MODULE(&LIB/SUBNUM) SRCFILE(&LIB/QSRVSRC) +
+                        SRCMBR(SUBNUM) TEXT('Binder source for SUBNUM service program') +
+                        BNDSRVPGM(*NONE) ACTGRP(*CALLER) ALWUPD(*YES) TGTRLS() AUT() +
+                        DETAIL(*BASIC) STGMDL(*SNGLVL) OPTION(*DUPPROC *DUPVAR) +
+                        BNDDIR(INABIND1) USRPRF(*USER) ALWRINZ(*YES)
+
+              CRTSRVPGM SRVPGM(&LIB/OP_SRCH)  MODULE(&LIB/OP_SRCH) SRCFILE(&LIB/QSRVSRC) +
+                        SRCMBR(OP_SRCH) TEXT('Binder source for OP_SRCH service program') +
+                        BNDSRVPGM(*NONE) ACTGRP(*CALLER) ALWUPD(*YES) TGTRLS() AUT() +
+                        DETAIL(*BASIC) STGMDL(*SNGLVL) OPTION(*DUPPROC *DUPVAR) +
+                        BNDDIR(INABIND1) USRPRF(*USER) ALWRINZ(*YES)
+
+              /*   RPG MAIN:   */
+              CRTSQLRPGI OBJ(&LIB/CALC1) SRCFILE(&LIB/QRPGSRC) SRCMBR(CALC1) REPLACE(*YES) +
+                          OBJTYPE(*PGM)
+
+              /*   CL:   */
+              CRTBNDCL PGM(&LIB/CALC1CL) SRCFILE(&LIB/QCLSRC) +
+                          SRCMBR(CALC1CL) REPLACE(*YES)
+              CRTBNDCL PGM(&LIB/CALC1STMF) SRCFILE(&LIB/QCLSRC) +
+                        SRCMBR(CALC1STMF) REPLACE(*YES)
+              CRTBNDCL PGM(&LIB/CALC1STMF1) SRCFILE(&LIB/QCLSRC) + 
+                          SRCMBR(CALC1STMF1) REPLACE(*YES)
+
+              /* Can't compile yourself */
+              /* CRTBNDCL PGM(&LIB/CALC1CMPL) SRCFILE(&LIB/QCLSRC) + 
+                          SRCMBR(CALC1CMPL) REPLACE(*YES) */
+
+            ENDPGM
